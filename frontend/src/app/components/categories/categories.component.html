@@ -1,0 +1,63 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-danger">📂 Gestion des Catégories</h2>
+    <button class="btn btn-danger" (click)="toggleForm()">
+      {{ showForm ? '✕ Annuler' : '+ Nouvelle Catégorie' }}
+    </button>
+  </div>
+
+  <!-- FORMULAIRE -->
+  <div class="card shadow-sm mb-4" *ngIf="showForm">
+    <div class="card-header bg-danger text-white">
+      <h5 class="mb-0">{{ isEditing ? '✏️ Modifier la catégorie' : '➕ Ajouter une catégorie' }}</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="formCat" (ngSubmit)="onSubmit()">
+        <div class="row g-3">
+          <div class="col-md-5">
+            <label class="form-label fw-semibold">Nom *</label>
+            <input type="text" class="form-control" formControlName="nom" placeholder="Ex: Entrées">
+            <div class="text-danger small" *ngIf="formCat.get('nom')?.invalid && formCat.get('nom')?.touched">
+              Obligatoire.
+            </div>
+          </div>
+          <div class="col-md-5">
+            <label class="form-label fw-semibold">Description</label>
+            <input type="text" class="form-control" formControlName="description">
+          </div>
+          <div class="col-md-2">
+            <label class="form-label fw-semibold">Icône</label>
+            <select class="form-select" formControlName="icone">
+              <option *ngFor="let i of icones" [value]="i">{{ i }}</option>
+            </select>
+          </div>
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-success" [disabled]="formCat.invalid">
+              {{ isEditing ? '💾 Mettre à jour' : '✅ Créer' }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- LISTE -->
+  <div class="row g-3">
+    <div class="col-md-4" *ngFor="let cat of categories">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <div class="display-4 mb-2">{{ cat.icone }}</div>
+          <h5 class="fw-bold">{{ cat.nom }}</h5>
+          <p class="text-muted small">{{ cat.description }}</p>
+          <div class="d-flex gap-2 justify-content-center mt-3">
+            <button class="btn btn-warning btn-sm" (click)="onEdit(cat)">✏️ Modifier</button>
+            <button class="btn btn-danger btn-sm" (click)="onDelete(cat.id!)">🗑️ Supprimer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 text-center py-5" *ngIf="categories.length === 0">
+      <p class="text-muted">Aucune catégorie.</p>
+    </div>
+  </div>
+</div>

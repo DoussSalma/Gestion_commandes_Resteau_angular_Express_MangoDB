@@ -1,0 +1,159 @@
+{
+  "info": {
+    "name": "Projet 8 - Gestion Restaurant (Polytech Monastir)",
+    "description": "Tests API REST - MEAN Stack - Plats, Catégories, Commandes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "CATEGORIES",
+      "item": [
+        {
+          "name": "GET - Liste toutes les catégories",
+          "request": { "method": "GET", "url": { "raw": "http://localhost:3000/api/categories" } }
+        },
+        {
+          "name": "POST - Créer une catégorie",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Pâtes\",\n  \"description\": \"Pâtes fraîches\",\n  \"icone\": \"🍝\",\n  \"sousCategories\": [\"Pâtes rouges\", \"Pâtes blanches\"]\n}" },
+            "url": { "raw": "http://localhost:3000/api/categories" }
+          }
+        },
+        {
+          "name": "GET - Catégorie par ID",
+          "request": { "method": "GET", "url": { "raw": "http://localhost:3000/api/categories/{{categorieId}}" } }
+        },
+        {
+          "name": "PUT - Modifier une catégorie",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Pâtes maison\",\n  \"description\": \"Modifié\",\n  \"icone\": \"🍝\"\n}" },
+            "url": { "raw": "http://localhost:3000/api/categories/{{categorieId}}" }
+          }
+        },
+        {
+          "name": "DELETE - Supprimer une catégorie",
+          "request": { "method": "DELETE", "url": { "raw": "http://localhost:3000/api/categories/{{categorieId}}" } }
+        },
+        {
+          "name": "ERREUR 400 - Sans nom obligatoire",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"description\": \"Sans nom - doit retourner 400\"\n}" },
+            "url": { "raw": "http://localhost:3000/api/categories" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PLATS",
+      "item": [
+        {
+          "name": "GET - Liste tous les plats",
+          "request": { "method": "GET", "url": { "raw": "http://localhost:3000/api/plats" } }
+        },
+        {
+          "name": "GET - Recherche par nom",
+          "request": { "method": "GET", "url": { "raw": "http://localhost:3000/api/plats/search?nom=saumon" } }
+        },
+        {
+          "name": "GET - Filtrer par catégorie",
+          "request": { "method": "GET", "url": { "raw": "http://localhost:3000/api/plats/categorie/{{categorieId}}" } }
+        },
+        {
+          "name": "GET - Plat par ID",
+          "request": { "method": "GET", "url": { "raw": "http://localhost:3000/api/plats/{{platId}}" } }
+        },
+        {
+          "name": "POST - Créer un plat",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Pizza Margherita\",\n  \"description\": \"Tomate, mozzarella, basilic\",\n  \"prix\": 12.5,\n  \"categorie\": \"{{categorieId}}\",\n  \"disponible\": true\n}" },
+            "url": { "raw": "http://localhost:3000/api/plats" }
+          }
+        },
+        {
+          "name": "PUT - Modifier un plat",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"nom\": \"Pizza Spéciale\",\n  \"prix\": 14.0\n}" },
+            "url": { "raw": "http://localhost:3000/api/plats/{{platId}}" }
+          }
+        },
+        {
+          "name": "DELETE - Supprimer un plat",
+          "request": { "method": "DELETE", "url": { "raw": "http://localhost:3000/api/plats/{{platId}}" } }
+        },
+        {
+          "name": "ERREUR 400 - Sans nom ni catégorie",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"prix\": 10\n}" },
+            "url": { "raw": "http://localhost:3000/api/plats" }
+          }
+        },
+        {
+          "name": "ERREUR 404 - ID inexistant",
+          "request": { "method": "GET", "url": { "raw": "http://localhost:3000/api/plats/000000000000000000000000" } }
+        }
+      ]
+    },
+    {
+      "name": "COMMANDES",
+      "item": [
+        {
+          "name": "GET - Liste toutes les commandes",
+          "request": { "method": "GET", "url": { "raw": "http://localhost:3000/api/commandes" } }
+        },
+        {
+          "name": "POST - Créer commande (calcul total auto)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"numeroTable\": 3,\n  \"client\": \"Ahmed Ben Ali\",\n  \"lignes\": [\n    { \"plat\": \"{{platId}}\", \"quantite\": 2 },\n    { \"plat\": \"{{platId2}}\", \"quantite\": 1 }\n  ],\n  \"notes\": \"Sans gluten svp\"\n}" },
+            "url": { "raw": "http://localhost:3000/api/commandes" }
+          }
+        },
+        {
+          "name": "GET - Commande par ID",
+          "request": { "method": "GET", "url": { "raw": "http://localhost:3000/api/commandes/{{commandeId}}" } }
+        },
+        {
+          "name": "PUT - Changer statut commande",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"statut\": \"en_preparation\"\n}" },
+            "url": { "raw": "http://localhost:3000/api/commandes/{{commandeId}}" }
+          }
+        },
+        {
+          "name": "DELETE - Supprimer une commande",
+          "request": { "method": "DELETE", "url": { "raw": "http://localhost:3000/api/commandes/{{commandeId}}" } }
+        },
+        {
+          "name": "ERREUR 400 - Sans numeroTable ni lignes",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"client\": \"Test erreur\",\n  \"lignes\": []\n}" },
+            "url": { "raw": "http://localhost:3000/api/commandes" }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "categorieId", "value": "REMPLACER_PAR_ID_MONGODB" },
+    { "key": "platId", "value": "REMPLACER_PAR_ID_MONGODB" },
+    { "key": "platId2", "value": "REMPLACER_PAR_ID_MONGODB" },
+    { "key": "commandeId", "value": "REMPLACER_PAR_ID_MONGODB" }
+  ]
+}
